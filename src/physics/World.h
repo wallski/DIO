@@ -11,8 +11,13 @@ public:
 
     const std::vector<Particle>& getParticles() const { return particles; }
 
+    void setTargetTemperature(float t) { targetTemperature = t; }
+    float getCurrentTemperature() const;
+
 private:
     void step(float dt);
+    void applyThermostat(float dt);
 
     std::vector<Particle> particles;
+    float targetTemperature = 0.0f;
 };

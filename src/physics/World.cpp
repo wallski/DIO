@@ -1,6 +1,7 @@
 #include "World.h"
 #include "Forces.h"
 #include "../core/Config.h"
+#include <cmath>
 
 World::World() = default;
 
@@ -8,21 +9,42 @@ void World::addParticle(const Particle& p) {
     particles.push_back(p);
 }
 
+float World::getCurrentTemperature() const {
+    if (particles.empty()) return 0.0f;
+    float sumKE = 0.0f;
+    for (const auto& p : particles) {
+        sumKE += 0.5f * p.mass * p.velocity.lengthSquared();
+    }
+    return (2.0f * sumKE) / static_cast<float>(particles.size());
+}
+
 void World::update(float dt) {
     if (dt <= 0.0f) return;
     float subDt = dt / Config::SUBSTEPS;
     for (int i = 0; i < Config::SUBSTEPS; ++i) {
         step(subDt);
+        applyThermostat(subDt);
+    }
+}
+
+void World::applyThermostat(float dt) {
+    if (targetTemperature <= 0.0f) return;
+    if (particles.empty()) return;
+
+    float currentT = getCurrentTemperature();
+    if (currentT < 1e-6f) return;
+
+    float lambda = std::sqrt(1.0f + (dt / Config::THERMOSTAT_TAU) *
+        (targetTemperature / currentT - 1.0f));
+
+    for (auto& p : particles) {
+        p.velocity *= lambda;
     }
 }
 
 void World::step(float dt) {
     for (auto& p : particles) {
         p.force = Vec2(0.0f, 0.0f);
-    }
-
-    for (auto& p : particles) {
-        p.applyForce(Vec2(0.0f, Config::GRAVITY * p.mass));
     }
 
     for (size_t i = 0; i < particles.size(); ++i) {
@@ -38,7 +60,6 @@ void World::step(float dt) {
     for (auto& p : particles) {
         Vec2 acceleration = p.force / p.mass;
         p.velocity += acceleration * dt;
-        p.velocity *= Config::DAMPING;
         p.position += p.velocity * dt;
 
         if (p.position.y + p.radius > Config::SCREEN_HEIGHT) {
