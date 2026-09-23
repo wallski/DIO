@@ -2,18 +2,17 @@
 #include <vector>
 #include "Particle.h"
 
-
 class World {
 public:
-	World();
+    World();
 
+    void update(float dt);
+    void addParticle(const Particle& p);
 
-	void update(float dt);
-	void addParticle(const Particle& p);
-
-	const std::vector<Particle>& getParticles() const { return particles; }
+    const std::vector<Particle>& getParticles() const { return particles; }
 
 private:
-	std::vector<Particle> particles;
+    void step(float dt);
 
+    std::vector<Particle> particles;
 };

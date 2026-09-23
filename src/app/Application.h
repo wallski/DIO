@@ -3,16 +3,15 @@
 #include "../physics/World.h"
 #include "../graphics/Renderer.h"
 
-
 class Application {
 public:
-	Application();
-	void run();
+    Application();
+    void run();
 
 private:
-	void handleEvents();
+    void handleEvents();
 
-	sf::RenderWindow window;
-	World world;
-	Renderer renderer;
+    sf::RenderWindow window;
+    World world;
+    Renderer renderer;
 };

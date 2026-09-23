@@ -4,9 +4,9 @@
 Application::Application()
     : window(sf::VideoMode({ Config::SCREEN_WIDTH, Config::SCREEN_HEIGHT }), "DIO - Simulation"),
     renderer(window)
-
 {
-    world.addParticle(Particle(Vec2(Config::SCREEN_WIDTH / 2.0f, 100.0f), 1.0f, 10.0f));
+    world.addParticle(Particle(Vec2(550.0f, 360.0f), 1.0f, 10.0f, 1.0f));
+    world.addParticle(Particle(Vec2(650.0f, 360.0f), 1.0f, 10.0f, -1.0f));
 }
 
 void Application::run() {
