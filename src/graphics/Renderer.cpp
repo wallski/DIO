@@ -1,48 +1,43 @@
 #include "Renderer.h"
 #include "../core/Config.h"
-#include <algorithm>
-#include <cstdint>
+
+namespace {
+    sf::Color elementColor(ElementType t) {
+        switch (t) {
+        case ElementType::Argon:    return sf::Color(180, 180, 200);
+        case ElementType::Hydrogen: return sf::Color(240, 240, 240);
+        case ElementType::Carbon:   return sf::Color(60, 60, 60);
+        case ElementType::Nitrogen: return sf::Color(80, 130, 255);
+        case ElementType::Oxygen:   return sf::Color(230, 60, 60);
+        default:                    return sf::Color(200, 200, 200);
+        }
+    }
+}
 
 Renderer::Renderer(sf::RenderWindow& window) : window(window) {}
 
 void Renderer::draw(const World& world) {
     const auto& particles = world.getParticles();
+    const auto& bonds = world.getBonds();
     const float scale = Config::PIXELS_PER_ANGSTROM;
-    constexpr float BOND_CUTOFF = 4.767f;
-    constexpr float BOND_CUTOFF_SQ = BOND_CUTOFF * BOND_CUTOFF;
-    constexpr float V_MIN = 0.0f;
-    constexpr float V_MAX = 1.2f;
 
-    for (size_t i = 0; i < particles.size(); ++i) {
-        for (size_t j = i + 1; j < particles.size(); ++j) {
-            Vec2 delta = particles[j].position - particles[i].position;
-            if (delta.lengthSquared() < BOND_CUTOFF_SQ) {
-                sf::Vertex line[] = {
-                    sf::Vertex(sf::Vector2f(particles[i].position.x * scale,
-                                            particles[i].position.y * scale),
-                               sf::Color(70, 70, 70)),
-                    sf::Vertex(sf::Vector2f(particles[j].position.x * scale,
-                                            particles[j].position.y * scale),
-                               sf::Color(70, 70, 70))
-                };
-                window.draw(line, 2, sf::PrimitiveType::Lines);
-            }
-        }
+    for (const auto& b : bonds) {
+        const auto& a1 = particles[b.i];
+        const auto& a2 = particles[b.j];
+        sf::Vertex line[] = {
+            sf::Vertex(sf::Vector2f(a1.position.x * scale, a1.position.y * scale),
+                       sf::Color(90, 90, 90)),
+            sf::Vertex(sf::Vector2f(a2.position.x * scale, a2.position.y * scale),
+                       sf::Color(90, 90, 90))
+        };
+        window.draw(line, 2, sf::PrimitiveType::Lines);
     }
 
     for (const auto& p : particles) {
-        float speed = p.velocity.length();
-        float t = std::clamp((speed - V_MIN) / (V_MAX - V_MIN), 0.0f, 1.0f);
-
-        sf::Color color(
-            static_cast<std::uint8_t>(80 + t * 175),
-            static_cast<std::uint8_t>(120 - t * 60),
-            static_cast<std::uint8_t>(255 - t * 220)
-        );
-
-        sf::CircleShape circle(p.radius * scale);
-        circle.setFillColor(color);
-        circle.setOrigin(sf::Vector2f(p.radius * scale, p.radius * scale));
+        float r = p.radius() * scale;
+        sf::CircleShape circle(r);
+        circle.setFillColor(elementColor(p.element));
+        circle.setOrigin(sf::Vector2f(r, r));
         circle.setPosition(sf::Vector2f(p.position.x * scale, p.position.y * scale));
         window.draw(circle);
     }

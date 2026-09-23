@@ -1,5 +1,4 @@
 #include "TextBox.h"
-#include <algorithm>
 #include <cstdlib>
 
 TextBox::TextBox(const sf::Font& font, float x, float y, float width, float height)

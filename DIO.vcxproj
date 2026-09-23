@@ -151,6 +151,7 @@
     <ClCompile Include="src\biology\Reproduction.cpp" />
     <ClCompile Include="src\chemistry\Atom.cpp" />
     <ClCompile Include="src\chemistry\Bond.cpp" />
+    <ClCompile Include="src\chemistry\Element.cpp" />
     <ClCompile Include="src\chemistry\Molecule.cpp" />
     <ClCompile Include="src\core\Math.cpp" />
     <ClCompile Include="src\core\Random.cpp" />
