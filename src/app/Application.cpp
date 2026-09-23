@@ -3,20 +3,37 @@
 #include <random>
 
 Application::Application()
-    : window(sf::VideoMode({ Config::SCREEN_WIDTH, Config::SCREEN_HEIGHT }), "DIO - Simulation"),
+    : window(sf::VideoMode({ Config::SCREEN_WIDTH, Config::SCREEN_HEIGHT }), "DIO - Argon"),
     renderer(window)
 {
     std::mt19937 rng(42);
-    std::uniform_real_distribution<float> xDist(80.0f, Config::SCREEN_WIDTH - 80.0f);
-    std::uniform_real_distribution<float> yDist(80.0f, Config::SCREEN_HEIGHT - 80.0f);
-    std::uniform_real_distribution<float> vDist(-Config::SPAWN_VELOCITY, Config::SPAWN_VELOCITY);
+    std::uniform_real_distribution<float> xDist(4.0f, Config::BOX_WIDTH - 4.0f);
+    std::uniform_real_distribution<float> yDist(4.0f, Config::BOX_HEIGHT - 4.0f);
+    std::uniform_real_distribution<float> vDist(-0.3f, 0.3f);
 
-    for (int i = 0; i < Config::PARTICLE_COUNT; ++i) {
-        float charge = (i % 2 == 0) ? 1.0f : -1.0f;
-        Particle p(Vec2(xDist(rng), yDist(rng)), 1.0f,
-            static_cast<float>(Config::PARTICLE_RADIUS), charge);
+    constexpr int COUNT = 80;
+    constexpr float MIN_SEPARATION_SQ = 3.405f * 3.405f;
+
+    int attempts = 0;
+    int placed = 0;
+    while (placed < COUNT && attempts < 10000) {
+        ++attempts;
+        Vec2 pos(xDist(rng), yDist(rng));
+
+        bool tooClose = false;
+        for (const auto& existing : world.getParticles()) {
+            Vec2 d = existing.position - pos;
+            if (d.lengthSquared() < MIN_SEPARATION_SQ) {
+                tooClose = true;
+                break;
+            }
+        }
+        if (tooClose) continue;
+
+        Particle p(pos, 39.95f, 0.5f, 0.0f);
         p.velocity = Vec2(vDist(rng), vDist(rng));
         world.addParticle(p);
+        ++placed;
     }
 
     world.setTargetTemperature(Config::DEFAULT_TEMPERATURE);
@@ -34,9 +51,9 @@ void Application::run() {
         lastTime = currentTime;
         if (dt > 0.1f) dt = 0.1f;
 
+        float simDt = Config::STEPS_PER_FRAME * Config::TIMESTEP_PS;
         world.setTargetTemperature(ui.getTargetTemperature());
-
-        world.update(dt);
+        world.update(simDt);
 
         window.clear(sf::Color::Black);
         renderer.draw(world);

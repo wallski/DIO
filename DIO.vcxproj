@@ -157,6 +157,7 @@
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Slider.cpp" />
+    <ClCompile Include="src\graphics\TextBox.cpp" />
     <ClCompile Include="src\graphics\UI.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\physics\Forces.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="src\graphics\Camera.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\graphics\Slider.h" />
+    <ClInclude Include="src\graphics\TextBox.h" />
     <ClInclude Include="src\graphics\UI.h" />
     <ClInclude Include="src\physics\Forces.h" />
     <ClInclude Include="src\physics\Integrator.h" />

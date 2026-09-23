@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Slider.h"
+#include "TextBox.h"
 
 class UI {
 public:
@@ -8,10 +9,12 @@ public:
     void handleEvent(const sf::Event& event, const sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
 
-    float getTargetTemperature() const;
+    float getTargetTemperature() const { return temperature; }
 
 private:
-    Slider tempSlider;
     sf::Font font;
+    Slider tempSlider;
+    TextBox tempBox;
     sf::Text tempLabel;
+    float temperature;
 };

@@ -4,25 +4,20 @@ namespace Config {
     constexpr int SCREEN_WIDTH = 1200;
     constexpr int SCREEN_HEIGHT = 720;
 
-    constexpr float DT = 1.0f / 60.0f;
-    constexpr int SUBSTEPS = 8;
+    constexpr float BOLTZMANN = 0.0083144626f;
+    constexpr float COULOMB_K = 1389.35458f;
 
-    constexpr float GRAVITY = 0.0f;
+    constexpr float BOX_WIDTH = 60.0f;
+    constexpr float BOX_HEIGHT = 36.0f;
 
-    constexpr float LENNARD_EPSILON = 5000.0f;
-    constexpr float LENNARD_SIGMA = 25.0f;
+    constexpr float TIMESTEP_PS = 0.001f;
+    constexpr int   STEPS_PER_FRAME = 20;
 
-    constexpr float MAX_FORCE = 200000.0f;
-    constexpr float DAMPING = 0.9998f;
-
-    constexpr int PARTICLE_COUNT = 50;
-    constexpr int PARTICLE_RADIUS = 5;
-    constexpr float SPAWN_VELOCITY = 80.0f;
-
-    constexpr float BOND_THRESHOLD = LENNARD_SIGMA * 1.4f;
+    constexpr float THERMOSTAT_TAU = 0.1f;
 
     constexpr float MIN_TEMPERATURE = 0.0f;
-    constexpr float MAX_TEMPERATURE = 8000.0f;
-    constexpr float DEFAULT_TEMPERATURE = 500.0f;
-    constexpr float THERMOSTAT_TAU = 0.3f;
+    constexpr float MAX_TEMPERATURE = 1000.0f;
+    constexpr float DEFAULT_TEMPERATURE = 300.0f;
+
+    constexpr float PIXELS_PER_ANGSTROM = 20.0f;
 }

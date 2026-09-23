@@ -15,8 +15,9 @@ Vec2 Forces::lennardJones(const Particle& a, const Particle& b, float epsilon, f
 
     float magnitude = (24.0f * epsilon / r) * (2.0f * sr12 - sr6);
 
-    if (magnitude > Config::MAX_FORCE) magnitude = Config::MAX_FORCE;
-    if (magnitude < -Config::MAX_FORCE) magnitude = -Config::MAX_FORCE;
+    constexpr float MAX_LJ_FORCE = 500.0f;
+    if (magnitude > MAX_LJ_FORCE) magnitude = MAX_LJ_FORCE;
+    if (magnitude < -MAX_LJ_FORCE) magnitude = -MAX_LJ_FORCE;
 
     Vec2 dir = delta / r;
     return dir * magnitude;

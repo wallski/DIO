@@ -14,6 +14,11 @@ Slider::Slider(float x, float y, float width)
     knob.setPosition(sf::Vector2f(x + width * value, y + 3.0f));
 }
 
+void Slider::setNormalizedValue(float v) {
+    value = std::clamp(v, 0.0f, 1.0f);
+    knob.setPosition(sf::Vector2f(x + width * value, y + 3.0f));
+}
+
 void Slider::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
     if (const auto* mb = event.getIf<sf::Event::MouseButtonPressed>()) {
         sf::Vector2f mouse(static_cast<float>(mb->position.x), static_cast<float>(mb->position.y));

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Particle.h"
+#include "../core/Config.h"
 
 class World {
 public:
@@ -19,5 +20,5 @@ private:
     void applyThermostat(float dt);
 
     std::vector<Particle> particles;
-    float targetTemperature = 0.0f;
+    float targetTemperature = Config::DEFAULT_TEMPERATURE;
 };

@@ -7,6 +7,7 @@ public:
     void handleEvent(const sf::Event& event, const sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
     float getValue() const { return value; }
+    void setNormalizedValue(float v);
 
 private:
     float x, y, width;
