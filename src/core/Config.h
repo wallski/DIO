@@ -22,7 +22,7 @@ namespace Config {
     constexpr float BOND_THRESHOLD = LENNARD_SIGMA * 1.4f;
 
     constexpr float MIN_TEMPERATURE = 0.0f;
-    constexpr float MAX_TEMPERATURE = 400.0f;
-    constexpr float DEFAULT_TEMPERATURE = 50.0f;
+    constexpr float MAX_TEMPERATURE = 8000.0f;
+    constexpr float DEFAULT_TEMPERATURE = 500.0f;
     constexpr float THERMOSTAT_TAU = 0.3f;
 }

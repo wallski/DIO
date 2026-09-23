@@ -28,7 +28,6 @@ void World::update(float dt) {
 }
 
 void World::applyThermostat(float dt) {
-    if (targetTemperature <= 0.0f) return;
     if (particles.empty()) return;
 
     float currentT = getCurrentTemperature();
